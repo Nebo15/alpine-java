@@ -52,3 +52,15 @@ RUN mkdir /opt && \
            /opt/jdk/jre/lib/amd64/libjavafx*.so \
            /opt/jdk/jre/lib/amd64/libjfx*.so \
            /var/cache/apk/*
+
+
+RUN { \
+    echo '#!/bin/sh'; \
+    echo 'set -e'; \
+    echo; \
+    echo 'dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"'; \
+  } > /usr/local/bin/docker-java-home \
+  && chmod +x /usr/local/bin/docker-java-home
+
+ENV JAVA_HOME=/opt/jdk/jre \
+    PATH=$PATH:/opt/jdk/bin:/opt/jdk/jre/bin
